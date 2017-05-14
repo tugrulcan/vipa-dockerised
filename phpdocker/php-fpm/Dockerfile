@@ -28,7 +28,7 @@ RUN sed -i "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php/7.0/fpm/ph
     && sed -i "s/post_max_size = .*/post_max_size = 100M/" /etc/php/7.0/fpm/php.ini \
     && sed -i "s/;date.timezone.*/date.timezone = UTC/" /etc/php/7.0/fpm/php.ini
 
-RUN apt-get -y --no-install-recommends install nodejs nodejs-legacy npm \
+RUN apt-get -y --no-install-recommends install nodejs nodejs-legacy npm  git\
     && npm install -g bower
 
 RUN apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
@@ -40,8 +40,6 @@ RUN apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/
 # Obtain the latest code
 
 RUN mkdir -p /var/www \
-    && chown -R www-data:www-data /var/www \
-    && su -s /bin/bash www-data \
     && cd /var/www \
     && rm -rf html \
     && git clone https://github.com/academic/vipa.git \
