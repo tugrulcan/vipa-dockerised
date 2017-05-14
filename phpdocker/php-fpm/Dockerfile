@@ -4,10 +4,11 @@ FROM phpdockerio/php7-fpm:latest
 # https://github.com/phusion/baseimage-docker/issues/58
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 
-# Install selected extensions and other stuff
 RUN apt-get update \
-    && apt-get -y --no-install-recommends install apt-utils php7.0-memcached php7.0-pgsql php7.0-sqlite3 php-gd php7.0-gd php7.0-bcmath php7.0-imap php7.0-intl php7.0-mbstring php7.0-xdebug php7.0-xmlrpc php7.0-apcu \
-    && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+    && apt-get -y --no-install-recommends install apt-utils
+
+# Install selected extensions and other stuff
+RUN apt-get -y --no-install-recommends install php7.0-memcached php7.0-pgsql php7.0-sqlite3 php-gd php7.0-gd php7.0-bcmath php7.0-imap php7.0-intl php7.0-mbstring php7.0-xdebug php7.0-xmlrpc php7.0-apcu
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php &&  mv composer.phar /usr/local/bin/composer
@@ -27,8 +28,9 @@ RUN sed -i "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php/7.0/fpm/ph
     && sed -i "s/post_max_size = .*/post_max_size = 100M/" /etc/php/7.0/fpm/php.ini \
     && sed -i "s/;date.timezone.*/date.timezone = UTC/" /etc/php/7.0/fpm/php.ini
 
-RUN apt-get update \
-    && apt-get -y --no-install-recommends install nodejs nodejs-legacy npm \
+RUN apt-get -y --no-install-recommends install nodejs nodejs-legacy npm \
     && npm install -g bower
+
+RUN apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 WORKDIR "/application"
