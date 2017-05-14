@@ -32,12 +32,6 @@ services:
        - "8083:80"
       links:
        - php-fpm
-
-    nodejs:
-      image: node:7
-      container_name: vipa-node
-      links:
-       - php-fpm
     
     php-fpm:
       build:
