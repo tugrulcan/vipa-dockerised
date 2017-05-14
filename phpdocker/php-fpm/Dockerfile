@@ -7,8 +7,8 @@ RUN apt-get update \
     && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 # Install Composer
-RUN curl -sS https://getcomposer.org/installer | php &&
-    mv composer.phar /usr/local/bin/composer
+RUN curl -sS https://getcomposer.org/installer | php 
+RUN mv composer.phar /usr/local/bin/composer
 
 # Configure PHP CLI
 RUN sudo sed -i "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php/7.0/cli/php.ini &&
