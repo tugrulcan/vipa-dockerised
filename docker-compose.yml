@@ -33,12 +33,19 @@ services:
       links:
        - php-fpm
 
+    nodejs:
+      image: node:7
+      container_name: vipa-node
+      links:
+       - php-fpm
+    
     php-fpm:
       build:
         context: .
         dockerfile: phpdocker/php-fpm/Dockerfile
       container_name: vipa-php-fpm
       working_dir: /application
+      depends_on: nodejs
       volumes:
         - .:/application
         - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.0/fpm/conf.d/99-overrides.ini
