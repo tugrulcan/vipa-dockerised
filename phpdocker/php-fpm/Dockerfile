@@ -33,4 +33,31 @@ RUN apt-get -y --no-install-recommends install nodejs nodejs-legacy npm \
 
 RUN apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
-WORKDIR "/application"
+
+# Create the directory and set permissions
+# Switch to www-data user
+# Remove default nginx index.php page if you don't have any website in there
+# Obtain the latest code
+
+RUN mkdir -p /var/www \
+    && chown -R www-data:www-data /var/www \
+    && su -s /bin/bash www-data \
+    && cd /var/www \
+    && rm -rf html \
+    && git clone https://github.com/academic/vipa.git \
+    && cd vipa 
+
+
+RUN composer update -vvv -o \
+    && bower update \
+    && php app/console assets:install web --symlink \ 
+    && php app/console assetic:dump \ 
+    && php app/console doctrine:schema:drop --force \
+    && php app/console doctrine:schema:create \
+    && php app/console vipa:install \
+    && php app/console vipa:install:samples
+
+# Install Bundles
+WORKDIR "/var/www/vipa"
+# Citation bundle
+RUN app/console vipa:install:package citation
