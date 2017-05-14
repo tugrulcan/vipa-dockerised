@@ -1,2 +1,2 @@
 # vipa-dockerised
-Dockerisation of project Vipa (https://github.com/academic/vipa)
+Dockerisation of project [Vipa](https://github.com/academic/vipa)
