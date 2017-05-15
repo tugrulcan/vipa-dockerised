@@ -33,21 +33,7 @@ services:
        - "8083:80"
       links:
        - php-fpm
-    
-    php-fpm:
-      build:
-        context: .
-        dockerfile: phpdocker/php-fpm/Dockerfile
-      container_name: vipa-php-fpm
-      working_dir: /application
-      volumes:
-        - applicationvolume:/www
-        - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.0/fpm/conf.d/99-overrides.ini
-      depends_on:
-        - git
-        - composer
-        - nodejs-bower-grunt
-    
+
     git:
       image: bravissimolabs/alpine-git
       container_name: vipa-git
@@ -75,7 +61,21 @@ services:
       command: bower update 
       depends_on: 
       - git
-
+    
+    php-fpm:
+      build:
+        context: .
+        dockerfile: phpdocker/php-fpm/Dockerfile
+      container_name: vipa-php-fpm
+      working_dir: /application
+      volumes:
+        - applicationvolume:/www
+        - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.0/fpm/conf.d/99-overrides.ini
+      depends_on:
+        - git
+        - composer
+        - nodejs-bower-grunt
+    
       links:
         - memcached
         - postgres
