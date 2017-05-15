@@ -41,24 +41,28 @@ services:
       container_name: vipa-git
       volumes:
         - applicationvolume:/www
+      command: ls
 
     composer:
-      image: composer/composer
+      build:
+        context: .
+        dockerfile: phpdocker/composer/Dockerfile
       container_name: vipa-composer
       volumes:
         - applicationvolume:/www
-      working_dir: /www/vipa
-      command: update -vvv -o
+      command: update
       depends_on: 
       - git
     
     nodejs-bower-grunt:
-      image: digitallyseamless/nodejs-bower-grunt
+      build:
+        context: .
+        dockerfile: phpdocker/nodejs-bower-grunt/Dockerfile
       container_name: vipa-nodejs-bower-grunt
       volumes:
         - applicationvolume:/www
       working_dir: /www/vipa
-      command: bower update 
+      command: ls
       depends_on: 
       - git
     
