@@ -35,12 +35,12 @@ services:
        - php-fpm
 
     git:
-      image: bravissimolabs/alpine-git
+       build:
+        context: .
+        dockerfile: phpdocker/git/Dockerfile
       container_name: vipa-git
       volumes:
         - applicationvolume:/www
-      working_dir: /www/
-      command: git clone https://github.com/academic/vipa.git
 
     composer:
       image: composer/composer
