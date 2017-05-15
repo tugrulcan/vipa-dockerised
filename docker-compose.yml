@@ -35,7 +35,7 @@ services:
        - php-fpm
 
     git:
-       build:
+      build:
         context: .
         dockerfile: phpdocker/git/Dockerfile
       container_name: vipa-git
