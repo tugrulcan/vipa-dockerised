@@ -45,6 +45,8 @@ services:
         - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.0/fpm/conf.d/99-overrides.ini
       depends_on:
         - git
+        - composer
+        - nodejs-bower-grunt
     
     git:
       image: bravissimolabs/alpine-git
@@ -62,7 +64,7 @@ services:
       working_dir: /var/www/vipa
       command: update -vvv -o
       depends_on: 
-      - php-fpm
+      - git
     
     nodejs-bower-grunt:
       image: nodejs-bower-grunt
@@ -72,7 +74,7 @@ services:
       working_dir: /var/www/vipa
       command: bower update 
       depends_on: 
-      - php-fpm
+      - git
 
       links:
         - memcached
