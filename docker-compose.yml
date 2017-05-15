@@ -54,7 +54,7 @@ services:
       volumes:
         - applicationvolume:/www
       working_dir: /www/
-      command: clone https://github.com/academic/vipa.git
+      command: git clone https://github.com/academic/vipa.git
 
     composer:
       image: composer/composer
