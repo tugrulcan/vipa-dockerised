@@ -43,6 +43,16 @@ services:
       volumes:
         - applicationvolume:/
         - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.0/fpm/conf.d/99-overrides.ini
+      depends_on:
+        - git
+    
+    git:
+      image: bravissimolabs/alpine-git
+      container_name: vipa-git
+      volumes:
+        - applicationvolume:/
+      working_dir: /var/www/
+      command: clone https://github.com/academic/vipa.git
 
     composer:
       image: composer/composer
