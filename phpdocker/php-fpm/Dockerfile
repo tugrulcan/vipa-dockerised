@@ -39,11 +39,14 @@ RUN apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/
 # Remove default nginx index.php page if you don't have any website in there
 # Obtain the latest code
 
-# RUN mkdir -p /var/www \
-#     && cd /var/www \
-#     && rm -rf html \
-#     && git clone https://github.com/academic/vipa.git \
-#     && cd vipa 
+RUN mkdir -p /var/www \
+    && chown -R www-data:www-data /var/www \
+    && su -s /bin/bash www-data \
+
+RUN cd /var/www \
+    && rm -rf html \
+    && git clone https://github.com/academic/vipa.git \
+    && cd vipa 
 
 
 # RUN composer update -vvv -o \
