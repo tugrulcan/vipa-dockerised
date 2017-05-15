@@ -34,13 +34,13 @@ RUN apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/
 # Remove default nginx index.php page if you don't have any website in there
 # Obtain the latest code
 
-RUN chown -R www-data:www-data /var/www \
+RUN chown -R www-data:www-data /www \
     && su -s /bin/bash www-data
 
-RUN cd /var/www \
+RUN cd /www \
     && cd vipa 
 
-WORKDIR "/var/www/vipa"
+WORKDIR "/www/vipa"
 
 RUN php ./app/console assets:install web --symlink \ 
     && php ./app/console assetic:dump \ 

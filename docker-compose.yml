@@ -41,7 +41,7 @@ services:
       container_name: vipa-php-fpm
       working_dir: /application
       volumes:
-        - applicationvolume:/
+        - applicationvolume:/www
         - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.0/fpm/conf.d/99-overrides.ini
       depends_on:
         - git
@@ -52,16 +52,16 @@ services:
       image: bravissimolabs/alpine-git
       container_name: vipa-git
       volumes:
-        - applicationvolume:/
-      working_dir: /var/www/
+        - applicationvolume:/www
+      working_dir: /www/
       command: clone https://github.com/academic/vipa.git
 
     composer:
       image: composer/composer
       container_name: vipa-composer
       volumes:
-        - applicationvolume:/
-      working_dir: /var/www/vipa
+        - applicationvolume:/www
+      working_dir: /www/vipa
       command: update -vvv -o
       depends_on: 
       - git
@@ -70,8 +70,8 @@ services:
       image: digitallyseamless/nodejs-bower-grunt
       container_name: vipa-nodejs-bower-grunt
       volumes:
-        - applicationvolume:/
-      working_dir: /var/www/vipa
+        - applicationvolume:/www
+      working_dir: /www/vipa
       command: bower update 
       depends_on: 
       - git
