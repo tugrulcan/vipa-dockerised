@@ -67,7 +67,7 @@ services:
       - git
     
     nodejs-bower-grunt:
-      image: nodejs-bower-grunt
+      image: digitallyseamless/nodejs-bower-grunt
       container_name: vipa-nodejs-bower-grunt
       volumes:
         - applicationvolume:/
