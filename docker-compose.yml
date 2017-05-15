@@ -41,10 +41,33 @@ services:
       container_name: vipa-php-fpm
       working_dir: /application
       volumes:
-        - .:/application
+        - applicationvolume:/
         - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.0/fpm/conf.d/99-overrides.ini
+
+    composer:
+      image: composer/composer
+      container_name: vipa-composer
+      volumes:
+        - applicationvolume:/
+      working_dir: /var/www/vipa
+      command: update -vvv -o
+      depends_on: 
+      - php-fpm
+    
+    nodejs-bower-grunt:
+      image: nodejs-bower-grunt
+      container_name: vipa-nodejs-bower-grunt
+      volumes:
+        - applicationvolume:/
+      working_dir: /var/www/vipa
+      command: bower update 
+      depends_on: 
+      - php-fpm
 
       links:
         - memcached
         - postgres
         - elasticsearch
+
+volumes:
+    applicationvolume:

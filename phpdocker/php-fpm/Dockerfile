@@ -49,16 +49,14 @@ RUN cd /var/www \
     && cd vipa 
 
 
-# RUN composer update -vvv -o \
-#     && bower update \
-#     && php app/console assets:install web --symlink \ 
-#     && php app/console assetic:dump \ 
-#     && php app/console doctrine:schema:drop --force \
-#     && php app/console doctrine:schema:create \
-#     && php app/console vipa:install \
-#     && php app/console vipa:install:samples
+RUN php app/console assets:install web --symlink \ 
+    && php app/console assetic:dump \ 
+    && php app/console doctrine:schema:drop --force \
+    && php app/console doctrine:schema:create \
+    && php app/console vipa:install \
+    && php app/console vipa:install:samples
 
-# # Install Bundles
-# WORKDIR "/var/www/vipa"
-# # Citation bundle
-# RUN app/console vipa:install:package citation
+# Install Bundles
+WORKDIR "/var/www/vipa"
+# Citation bundle
+RUN app/console vipa:install:package citation
