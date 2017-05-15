@@ -40,23 +40,24 @@ services:
         dockerfile: phpdocker/git/Dockerfile
       container_name: vipa-git
       volumes:
-        - applicationvolume:/www
+        - ./app:/www
+      command: ls /
 
     composer:
       image: composer/composer
       container_name: vipa-composer
       volumes:
-        - applicationvolume:/www
+        - ./app:/www
       working_dir: /www/vipa
       command: update -vvv -o
       depends_on: 
       - git
     
-    nodejs-bower-grunt:
+    bower:
       image: digitallyseamless/nodejs-bower-grunt
-      container_name: vipa-nodejs-bower-grunt
+      container_name: vipa-bower
       volumes:
-        - applicationvolume:/www
+        - ./app:/www
       working_dir: /www/vipa
       command: bower update 
       depends_on: 
@@ -67,19 +68,16 @@ services:
         context: .
         dockerfile: phpdocker/php-fpm/Dockerfile
       container_name: vipa-php-fpm
-      working_dir: /application
+      working_dir: /www/vipa
       volumes:
-        - applicationvolume:/www
+        - ./app:/www
         - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.0/fpm/conf.d/99-overrides.ini
       depends_on:
         - git
         - composer
-        - nodejs-bower-grunt
+        - bower
     
       links:
         - memcached
         - postgres
         - elasticsearch
-
-volumes:
-    applicationvolume:

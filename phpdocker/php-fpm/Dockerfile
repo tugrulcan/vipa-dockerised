@@ -1,4 +1,6 @@
 FROM phpdockerio/php7-fpm:latest
+COPY ../../app /www
+
 # The following extensions are already included on the base image: APC, cURL, JSON, MCrypt (libsodium on 7.1), OPCache, Readline, XML and Zip.
 
 # https://github.com/phusion/baseimage-docker/issues/58
