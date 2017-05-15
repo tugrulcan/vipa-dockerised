@@ -41,7 +41,7 @@ RUN apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/
 
 RUN mkdir -p /var/www \
     && chown -R www-data:www-data /var/www \
-    && su -s /bin/bash www-data \
+    && su -s /bin/bash www-data
 
 RUN cd /var/www \
     && rm -rf html \
