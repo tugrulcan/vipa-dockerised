@@ -40,7 +40,7 @@ WORKDIR "/application"
 # Obtain the latest code
 # Installing Dependencies
 
-COPY ./config.json ~/.composer/config.json
+RUN  curl https://gist.githubusercontent.com/tugrulcan/56dca032cf5aaa534efd03b6c0b60595/raw/172dd61548c1c65d431b510cbf605fdec163c58b/config.json > ~/.composer/config.json
 
 RUN mkdir -p /var/www \
     && chown -R www-data:www-data /var/www \
