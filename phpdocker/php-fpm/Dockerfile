@@ -47,5 +47,7 @@ RUN mkdir -p /var/www \
     && rm -rf html \
     && git clone https://github.com/tugrulcan/vipa \ 
     && cd vipa  \
+    && git config --global github.user tugrulcan \ 
+    && git config --global github.token 22df922d11be2a35493ea8d022d13682541f51f9 \
     && composer update -vvv -o \
     && bower update
