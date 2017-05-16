@@ -46,7 +46,7 @@ RUN su -s /bin/bash www-data \
     && rm -rf html
 
 # Obtain the latest code
-RUN git clone https://github.com/academic/vipa.git \ 
+RUN git clone https://github.com/tugrulcan/vipa \ 
     && cd vipa
 
 # Installing Dependencies
