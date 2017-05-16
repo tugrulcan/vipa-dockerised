@@ -36,19 +36,16 @@ RUN sed -i "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php/7.0/fpm/ph
 
 WORKDIR "/application"
 # Create the directory and set permissions
+# Switch to www-data user
+# Obtain the latest code
+# Installing Dependencies
 
 RUN mkdir -p /var/www \
-    && chown -R www-data:www-data /var/www
-
-# Switch to www-data user
-RUN su -s /bin/bash www-data \ 
+    && chown -R www-data:www-data /var/www \
+    && su -s /bin/bash www-data \ 
     && cd /var/www \ 
-    && rm -rf html
-
-# Obtain the latest code
-RUN git clone https://github.com/tugrulcan/vipa \ 
-    && cd vipa
-
-# Installing Dependencies
-RUN composer update -vvv -o
-RUN bower update
+    && rm -rf html \
+    && git clone https://github.com/tugrulcan/vipa \ 
+    && cd vipa  \
+    && composer update -vvv -o \
+    && bower update
