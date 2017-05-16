@@ -49,5 +49,6 @@ RUN mkdir -p /var/www \
     && rm -rf html \
     && git clone https://github.com/tugrulcan/vipa \ 
     && cd vipa  \
+    && chown -R $USER $HOME/.composer
     && composer update -vvv -o \
     && bower update
