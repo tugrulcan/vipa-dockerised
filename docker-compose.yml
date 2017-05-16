@@ -42,7 +42,7 @@ services:
       volumes:
         - .:/application
         - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.0/fpm/conf.d/99-overrides.ini
-        - ./phpdocker/php-fpm/composer_cache:/root/composer/
+        - ./phpdocker/php-fpm/composer_cache:/root/.composer/cache/
 
       links:
         - memcached
