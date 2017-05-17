@@ -50,4 +50,11 @@ RUN mkdir -p /var/www \
     && git clone https://github.com/academic/vipa \ 
     && cd vipa  \
     && composer update -vvv -o \
-    && bower update --allow-root
+    && bower update --allow-root \
+    && php app/console assets:install web --symlink \
+    && php app/console assetic:dump \
+    && php app/console doctrine:schema:drop --force \
+    && php app/console doctrine:schema:create \
+    && php app/console vipa:install \
+    && php app/console vipa:install:samples \
+    && php app/console vipa:install:initial-data
