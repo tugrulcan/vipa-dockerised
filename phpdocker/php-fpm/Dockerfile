@@ -8,8 +8,9 @@ FROM    composer/composer AS composer-env
 COPY    --from=git-env /usr/app/src/ /usr/app/src/
 WORKDIR "/usr/app/src"
 # Composer Github Oauth
-RUN     curl https://raw.githubusercontent.com/djcf/humhub-docker/master/config.json > ~/.composer/config.json
-RUN     composer update -vvv -o
+RUN     echo "{}" > $COMPOSER_HOME/composer.json \
+     && curl https://raw.githubusercontent.com/djcf/humhub-docker/master/config.json > $COMPOSER_HOME/config.json
+     && composer update -vvv -o
 
 
 ## BOWER
