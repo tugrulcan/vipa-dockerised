@@ -6,10 +6,11 @@ RUN     git clone https://github.com/academic/vipa.git
 ## COMPOSER
 FROM    composer/composer AS composer-env
 COPY    --from=git-env /usr/app/src/ /usr/app/src/
+COPY    config.json $COMPOSER_HOME/config.json
+
 WORKDIR "/usr/app/src/vipa"
 # Composer Github Oauth
 RUN     echo "{}" > $COMPOSER_HOME/composer.json \
-     && curl https://raw.githubusercontent.com/djcf/humhub-docker/master/config.json > $COMPOSER_HOME/config.json \
      && composer update -vvv -o
 
 
@@ -19,15 +20,13 @@ COPY    --from=composer-env /usr/app/src/ /usr/app/src/
 WORKDIR "/usr/app/src/vipa"
 RUN     bower update --allow-root
 
-###########################################################################################
+###################################  RUNTIME  ########################################################
 
-## runtime
 ## PHP-fpm
 
 FROM    phpdockerio/php7-fpm:latest
 COPY    --from=bower-env /usr/app/src/ /usr/app/src/
 WORKDIR "/usr/app/src/vipa"
-
 # https://github.com/phusion/baseimage-docker/issues/58
 RUN     echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 
