@@ -47,7 +47,7 @@ RUN mkdir -p /var/www \
     && su -s /bin/bash www-data \ 
     && cd /var/www \ 
     && rm -rf html \
-    && git clone https://github.com/tugrulcan/vipa \ 
+    && git clone https://github.com/academic/vipa \ 
     && cd vipa  \
     && composer update -vvv -o \
     && bower update
