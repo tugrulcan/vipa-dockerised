@@ -50,4 +50,4 @@ RUN mkdir -p /var/www \
     && git clone https://github.com/academic/vipa \ 
     && cd vipa  \
     && composer update -vvv -o \
-    && bower update
+    && bower update --allow-root
