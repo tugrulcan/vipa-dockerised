@@ -6,7 +6,7 @@ RUN     git clone https://github.com/academic/vipa.git
 ## COMPOSER
 FROM    composer/composer AS composer-env
 COPY    --from=git-env /usr/app/src/ /usr/app/src/
-COPY    config.json $COMPOSER_HOME/config.json
+COPY    ./phpdocker/php-fpm/config.json $COMPOSER_HOME/config.json
 
 WORKDIR "/usr/app/src/vipa"
 # Composer Github Oauth
