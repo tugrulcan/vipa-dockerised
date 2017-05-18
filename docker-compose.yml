@@ -11,7 +11,6 @@ services:
     postgres:
       image: postgres:9.6-alpine
       container_name: vipa-postgres
-      working_dir: /application
       environment:
         - POSTGRES_USER=vipa
         - POSTGRES_PASSWORD=vipa
@@ -24,7 +23,6 @@ services:
     webserver:
       image: nginx:alpine
       container_name: vipa-webserver
-      working_dir: /application
       volumes:
           - .:/application
           - ./phpdocker/nginx/nginx.conf:/etc/nginx/sites-available/vipa
@@ -38,7 +36,6 @@ services:
         context: .
         dockerfile: phpdocker/php-fpm/Dockerfile
       container_name: vipa-php-fpm
-      working_dir: /application
       volumes:
         - .:/application
         - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.0/fpm/conf.d/99-overrides.ini

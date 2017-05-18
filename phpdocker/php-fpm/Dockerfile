@@ -46,20 +46,17 @@ RUN     mkdir -p /var/www \
         && su -s /bin/bash www-data \ 
         && cd /var/www \ 
         && rm -rf html \
-        && git clone https://github.com/tugrulcan/vipa \ 
+        && git clone https://github.com/tugrulcan/vipa 
 
-RUN     chown -R www-data:www-data /var/www \
-        && su -s /bin/bash www-data \ 
+RUN     su -s /bin/bash www-data \ 
         && cd /var/www/vipa \ 
         &&composer update -vvv -o
 
-RUN     chown -R www-data:www-data /var/www \
-        && su -s /bin/bash www-data \ 
+RUN     su -s /bin/bash www-data \ 
         && cd /var/www/vipa \ 
         && bower update --allow-root 
 
-RUN     chown -R www-data:www-data /var/www \
-        && su -s /bin/bash www-data \ 
+RUN     su -s /bin/bash www-data \ 
         && cd /var/www/vipa \
         && php app/console assets:install web --symlink \
         && php app/console assetic:dump  \
