@@ -56,13 +56,3 @@ RUN     su -s /bin/bash www-data \
         && cd /var/www/vipa \ 
         && bower update --allow-root 
 
-RUN     su -s /bin/bash www-data \ 
-        && cd /var/www/vipa \
-        && php app/console assets:install web --symlink \
-        && php app/console assetic:dump  \
-        && php app/console doctrine:schema:drop --force  \
-        && php app/console doctrine:schema:create  \
-        && php app/console vipa:install  \
-        && php app/console vipa:install:samples  \
-        && php app/console vipa:install:initial-data
-
