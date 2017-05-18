@@ -33,8 +33,7 @@ RUN     sed -i "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php/7.0/fp
         && sed -i "s/post_max_size = .*/post_max_size = 100M/" /etc/php/7.0/fpm/php.ini \
         && sed -i "s/;date.timezone.*/date.timezone = UTC/" /etc/php/7.0/fpm/php.ini
 
-
-ADD     ./config.json  /root/.composer/
+ADD     ./phpdocker/php-fpm/config.json  /root/.composer/
 RUN     echo "{}" > ~/.composer/composer.json
 
 # Create the directory and set permissions
