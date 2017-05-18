@@ -23,7 +23,7 @@ RUN     echo 'debconf debconf/frontend select Noninteractive' | debconf-set-sele
 # Composer Github Oauth configurations
 WORKDIR "/usr/app"
 RUN     curl -sS https://getcomposer.org/installer | php &&  mv composer.phar /usr/local/bin/composer
-COPY    ./phpdocker/php-fpm/config.json ~/.composer/config.json
+ADD     ./phpdocker/php-fpm/config.json  /root/.composer/
 RUN     echo "{}" > ~/.composer/composer.json
 
 WORKDIR "/usr/app/src/vipa"
@@ -66,7 +66,7 @@ RUN mkdir -p /var/www \
     && rm -rf html \
     && cp -a /usr/app/src/. ./ \ 
     && cd vipa  \
-    && composer update -vvv -o \
+    && composer install -vvv -o \
     && php app/console assets:install web --symlink \
     && php app/console assetic:dump \
     && php app/console doctrine:schema:drop --force \
