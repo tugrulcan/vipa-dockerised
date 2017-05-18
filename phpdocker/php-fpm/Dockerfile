@@ -3,41 +3,38 @@ FROM    paasmule/curl-ssl-git AS git-env
 WORKDIR "/usr/app/src"
 RUN     git clone https://github.com/academic/vipa.git
 
-## COMPOSER
-FROM    composer/composer AS composer-env
-COPY    --from=git-env /usr/app/src/ /usr/app/src/
-COPY    ./phpdocker/php-fpm/config.json $COMPOSER_HOME/config.json
-
-WORKDIR "/usr/app/src/vipa"
-# Composer Github Oauth
-RUN     echo "{}" > $COMPOSER_HOME/composer.json \
-     && composer update -vvv -o
-
 
 ## BOWER
 FROM    digitallyseamless/nodejs-bower-grunt AS bower-env
-COPY    --from=composer-env /usr/app/src/ /usr/app/src/
+COPY    --from=git-env /usr/app/src/ /usr/app/src/
 WORKDIR "/usr/app/src/vipa"
 RUN     bower update --allow-root
+
 
 ###################################  RUNTIME  ########################################################
 
 ## PHP-fpm
-
 FROM    phpdockerio/php7-fpm:latest
 COPY    --from=bower-env /usr/app/src/ /usr/app/src/
-WORKDIR "/usr/app/src/vipa"
 # https://github.com/phusion/baseimage-docker/issues/58
 RUN     echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 
+# Install Composer
+# Composer Github Oauth configurations
+WORKDIR "/usr/app"
+RUN     curl -sS https://getcomposer.org/installer | php &&  mv composer.phar /usr/local/bin/composer
+COPY    ./phpdocker/php-fpm/config.json ~/.composer/config.json
+RUN     echo "{}" > ~/.composer/composer.json
+
+WORKDIR "/usr/app/src/vipa"
 
 # Install selected extensions and other stuff
 # The following extensions are already included on the base image: APC, cURL, JSON, MCrypt (libsodium on 7.1), OPCache, Readline, XML and Zip.
-RUN apt-get update \
-    && apt-get -y --no-install-recommends install apt-utils \ 
-    && apt-get -y --no-install-recommends install php7.0-memcached php7.0-pgsql php7.0-sqlite3 \ 
-    php-gd php7.0-gd php7.0-bcmath php7.0-imap php7.0-intl php7.0-mbstring php7.0-xdebug \ 
-    php7.0-xmlrpc php7.0-apcu 
+RUN     apt-get update \
+        && apt-get -y --no-install-recommends install apt-utils \ 
+        && apt-get -y --no-install-recommends install php7.0-memcached php7.0-pgsql php7.0-sqlite3 \ 
+        php-gd php7.0-gd php7.0-bcmath php7.0-imap php7.0-intl php7.0-mbstring php7.0-xdebug \ 
+        php7.0-xmlrpc php7.0-apcu 
 
 RUN apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
@@ -67,8 +64,9 @@ RUN mkdir -p /var/www \
     && su -s /bin/bash www-data \ 
     && cd /var/www \ 
     && rm -rf html \
-    && cp /usr/app/src ./ \ 
+    && cp -a /usr/app/src/. ./ \ 
     && cd vipa  \
+    && composer update -vvv -o \
     && php app/console assets:install web --symlink \
     && php app/console assetic:dump \
     && php app/console doctrine:schema:drop --force \
